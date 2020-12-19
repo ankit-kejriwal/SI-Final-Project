@@ -62,8 +62,10 @@ app.use(bodyParser.json());
  *      responses:
  *          200:
  *              description: detailed description of the image with confidence score
+ *          400:
+ *              description: Bad Request or Invalid URL
  *          500:
- *              description: incorrect url
+ *              description: Internal Server Error
  *      parameters:
  *          - name: url
  *            description: Request object
@@ -76,6 +78,9 @@ app.use(bodyParser.json());
 
 app.post("/imageDescription", async (req, res, next) => {
   let url = req.body.url;
+  if(req.body == null || req.body == undefined || req.body.url == undefined  || req.body.url == null){
+    return res.status(400).json('Bad request');
+  }
   var caption;
   await async.series(
     [
@@ -101,7 +106,7 @@ app.post("/imageDescription", async (req, res, next) => {
       },
     ],
     (error) => {
-      res.status(500).json({
+      res.status(error.statusCode).json({
         error
     })
     }
@@ -129,8 +134,10 @@ app.post("/imageDescription", async (req, res, next) => {
  *      responses:
  *          200:
  *              description: category of the image with confidence score
+ *          400:
+ *              description: Bad Request or Invalid URL
  *          500:
- *              description: incorrect url
+ *              description: Internal Server Error
  *      parameters:
  *          - name: url
  *            description: Request object
@@ -143,6 +150,9 @@ app.post("/imageDescription", async (req, res, next) => {
 
 app.post("/imageCategory", async (req, res, next) => {
   let url = req.body.url;
+  if(req.body == null || req.body == undefined || req.body.url == undefined  || req.body.url == null){
+    return res.status(400).json('Bad request');
+  }
   var categories;
   await async.series(
     [
@@ -167,7 +177,7 @@ app.post("/imageCategory", async (req, res, next) => {
       },
     ],
     (error) => {
-      res.status(500).json({
+      res.status(error.statusCode).json({
         error
     })
     }
@@ -195,8 +205,10 @@ app.post("/imageCategory", async (req, res, next) => {
  *      responses:
  *          200:
  *              description: Gets the set of detected tags in the image with confidence score
+ *          400:
+ *              description: Bad Request or Invalid URL
  *          500:
- *              description: incorrect url
+ *              description: Internal Server Error
  *      parameters:
  *          - name: url
  *            description: Request object
@@ -209,6 +221,9 @@ app.post("/imageCategory", async (req, res, next) => {
 
 app.post("/imageTags", async (req, res, next) => {
   let url = req.body.url;
+  if(req.body == null || req.body == undefined || req.body.url == undefined  || req.body.url == null){
+    return res.status(400).json('Bad request');
+  }
   var tags;
   await async.series(
     [
@@ -235,7 +250,7 @@ app.post("/imageTags", async (req, res, next) => {
       },
     ],
     (error) => {
-        res.status(500).json({
+        res.status(error.statusCode).json({
             error
         })
     }
